@@ -1,16 +1,10 @@
 class Solution:
     def bitwiseComplement(self, n: int) -> int:
-        if n == 0:
-            return 1
+        bin_ = bin(n)[2:]
+        ln = len(bin_)
+        ret = [''] * ln
         
-        xor_ = self.solve(n)
-        # print(n, xor_)
-        return n ^ xor_
-        
-    def solve(self, n):
-        ret = 1
-        while n:
-            ret <<= 1
-            n >>= 1
+        for i in range(ln):
+            ret[i] = '0' if bin_[i] == '1' else '1'
             
-        return ret - 1
+        return int(''.join(ret), 2)
