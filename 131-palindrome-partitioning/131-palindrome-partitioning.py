@@ -1,55 +1,29 @@
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
         self.ret = []
-        self.d = dict()
         self.palins = dict()
+        self.dfs(s, 0, len(s), [])
         
-        self.solve(s, 1, len(s), [s[0]])
         return self.ret
     
-    def solve(self, s, i, ln, lst):
-        
-        if tuple(lst) in self.d:
-            return self.d[tuple(lst)]
-        
-        if i >= ln:
-            flag = self.ispalin(lst[-1])
-            # for i in lst:
-            #     if not self.ispalin(i):
-            #         flag = False
-            #         break
-                    
-            if flag:
-                self.ret.append([i for i in lst])
-            return
-        
-        for x in range(i, ln):
-            if not self.ispalin(lst[-1]):
-                break
-            res = self.solve(s, x + 1, ln, lst + [s[i:x + 1]])
-            self.d[tuple(lst + [s[i:x + 1]])] = res
-            
-        if len(lst) >= 2:
-            if not self.ispalin(lst[-2]):
-                return
-            
-        for x in range(i, ln):
-            res = self.solve(s, x + 1, ln, lst[:-1] + [lst[-1] + s[i:x + 1]])
-            self.d[tuple(lst[:-1] + [lst[-1] + s[i:x + 1]])] = res
-
     def ispalin(self, s):
         if s in self.palins:
             return self.palins[s]
         
-        if len(s) == 1:
-            self.palins[s] = True
-            return True
+        low, high = 0, len(s) - 1
         
-        i, ln = 0, len(s) - 1
-        while i < ln and s[i] == s[ln]:
-            i += 1
-            ln -= 1
+        while low < high and s[low] == s[high]:
+            low += 1
+            high -= 1
             
-        self.palins[s] = i >= ln
-        return i >= ln
+        self.palins[s] = low >= high
+        return low >= high
     
+    def dfs(self, s, start, end, path):
+        if start >= end:
+            self.ret.append([i for i in path])
+            return
+        
+        for i in range(start, end):
+            if self.ispalin(s[start:i + 1]):
+                self.dfs(s, i + 1, end, path + [s[start:i + 1]])
