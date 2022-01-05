@@ -13,11 +13,11 @@ class Solution:
             return self.d[tuple(lst)]
         
         if i >= ln:
-            flag = True
-            for i in lst:
-                if not self.ispalin(i):
-                    flag = False
-                    break
+            flag = self.ispalin(lst[-1])
+            # for i in lst:
+            #     if not self.ispalin(i):
+            #         flag = False
+            #         break
                     
             if flag:
                 self.ret.append([i for i in lst])
