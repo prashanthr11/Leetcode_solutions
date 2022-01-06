@@ -6,36 +6,37 @@
 #         self.right = right
 class Solution:
     def getDirections(self, root: Optional[TreeNode], startValue: int, destValue: int) -> str:
-        def get_path(root, value, path):
-            if not root:
-                return False
-
-            if root.val == value:
-                return True
-
-            path.append('L')
-            res = get_path(root.left, value, path)
-            if res:
-                return True
-
-            path.pop()
-            path.append('R')
-            res = get_path(root.right, value, path)
-            if res:
-                return True
-            path.pop()
-            return False
-    
+        
         lca = self.LCA(root, startValue, destValue)
         left_s = []
         right_s = []
         
-        get_path(lca, startValue, left_s)
-        get_path(lca, destValue, right_s)
+        self.get_path(lca, startValue, left_s)
+        self.get_path(lca, destValue, right_s)
 
         return 'U' * len(left_s) + ''.join(right_s)
     
-        
+    def get_path(self, root, value, path):
+        if not root:
+            return False
+
+        if root.val == value:
+            return True
+
+        path.append('L')
+        res = self.get_path(root.left, value, path)
+        if res:
+            return True
+
+        path.pop()
+        path.append('R')
+        res = self.get_path(root.right, value, path)
+        if res:
+            return True
+        path.pop()
+        return False
+    
+    
     def LCA(self, root, start, end):
         if not root or root.val == start or root.val == end:
             return root
