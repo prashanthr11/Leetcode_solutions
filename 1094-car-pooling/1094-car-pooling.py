@@ -1,20 +1,17 @@
 class Solution:
     def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
-        '''
-        Time Complexity: O(N)
-        Space Complexity: O(1)
-        '''
-        trip = [0] * 1001
+        heap = []
         
         for pas, start, end in trips:
-            trip[start] += pas
-            trip[end] -= pas
+            heapq.heappush(heap, (end, -pas))
+            heapq.heappush(heap, (start, pas))
             
-        tot = 0
-        for i in trip:
-            tot += i
-            if tot > capacity:
+        # print(heap)
+        while heap:
+            top = heapq.heappop(heap)
+            # print(top)
+            capacity -= top[1]
+            if capacity < 0:
                 return False
             
         return True
-    
