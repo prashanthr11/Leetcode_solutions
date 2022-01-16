@@ -2,28 +2,22 @@ class Solution:
     def maxDistToClosest(self, seats: List[int]) -> int:
         '''
         Time Complexity: O(N)
-        Space Complexity: O(N)
+        Space Complexity: O(1)
         '''
-        n = len(seats)
-        persons = [i for i, a in enumerate(seats) if a]
-        visited = [0] * n
-        cnt = 0
+        peoples = (i for i, seat in enumerate(seats) if seat)
+        prev, future = None, next(peoples)
+        maxi = 0
         
-        while persons:
-            neighbours = []
-            for persons_idx in persons:
-                if persons_idx + 1 < n and not visited[persons_idx + 1]:
-                    neighbours.append(persons_idx + 1)
-                    visited[persons_idx + 1] = True
+        for i, seat in enumerate(seats):
+            if seat:
+                prev = i
+            else:
+                while future is not None and future < i:
+                    future = next(peoples, None)
                     
-                if persons_idx - 1 >= 0 and not visited[persons_idx - 1]:
-                    neighbours.append(persons_idx - 1)
-                    visited[persons_idx - 1] = True
-                    
-                visited[persons_idx] = True
+                left = float('inf') if prev is None else i - prev
+                right = float('inf') if future is None else future - i
+                maxi = max(maxi, min(left, right))
                 
-            persons = neighbours
-            cnt += 1
-            
-        return cnt - 1
+        return maxi
     
