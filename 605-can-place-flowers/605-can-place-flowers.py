@@ -1,16 +1,32 @@
 class Solution:
-    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
-        '''
-        Time complexity: O(N)
-        Space complexity: O(N)
-        '''
-        lst = [0] + flowerbed + [0]
-        cnt = 0
+    def canPlaceFlowers(self, l: List[int], n: int) -> bool:
+        i, ln, cnt = 0, len(l), 0
         
-        for i in range(1, len(lst) - 1):
-            if lst[i] == lst[i - 1] == lst[i + 1] == 0:
-                lst[i] = 1
-                cnt += 1
-                
+        while i < ln:
+            if i == 0:
+                if l[i] == 0:
+                    if i + 1 < ln:
+                        if l[i + 1] == 0:
+                            l[i] = 1
+                            cnt += 1
+                    else:
+                        l[i] = 1
+                        cnt += 1
+            elif i == ln - 1:
+                if l[i] == 0:
+                    if i - 1 >= 0:
+                        if l[i - 1] == 0:
+                            l[i] = 1
+                            cnt += 1
+                    else:
+                        l[i] = 1
+                        cnt += 1
+            else:
+                if l[i] == l[i - 1] == l[i + 1] == 0:
+                    l[i] = 1
+                    i += 1
+                    cnt += 1
+                    
+            i += 1
+            
         return cnt >= n
-    
