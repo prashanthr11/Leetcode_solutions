@@ -1,5 +1,9 @@
 class Solution:
     def minMoves(self, target: int, maxDoubles: int) -> int:
+        '''
+        Time Complexity: O(Log N)
+        Space Complexity: O(1)
+        '''
         cnt = 0
         
         while target != 1:
