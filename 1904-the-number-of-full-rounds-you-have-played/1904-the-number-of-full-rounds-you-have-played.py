@@ -18,13 +18,11 @@ class Solution:
         logout_min = floor(logout_min / 15) * 15
         
         if login_min == 60:
-            # login_hour = (login_hour + 1) % 24
             login_hour += 1
             login_min = 0
             
-        game_starts = str(login_hour) + ':' + str(login_min)
-        game_ends = str(logout_hour) + ':' + str(logout_min)
-        
+        game_starts = login_hour * 100 + login_min
+        game_ends = logout_hour * 100 + logout_min
         
         while True:
             # print(game_starts, game_ends)
@@ -32,26 +30,24 @@ class Solution:
                 break
                 
             ret += 1
-            hrs, mins = map(int, game_starts.split(':'))
+            hrs = game_starts // 100
+            mins = game_starts % 100
             mins += 15
             if mins >= 60:
                 hrs += 1
                 mins %= 60
                 
-            game_starts = str(hrs) + ':' + str(mins)
+            game_starts = (hrs * 100) + mins
                 
         return ret
     
     
     def check(self, start_time, end_time):
-        start_hrs, start_mins = map(int, start_time.split(':'))
-        end_hrs, end_mins = map(int, end_time.split(':'))
+        
+        start_hrs = start_time // 100
+        start_mins = start_time % 100
+        end_hrs = end_time // 100
+        end_mins = end_time % 100
         
         return start_hrs == end_hrs and start_mins == end_mins
     
-        if start_hrs == end_hrs:
-            if start_mins == end_mins:
-                return True
-            
-        return False
-        
