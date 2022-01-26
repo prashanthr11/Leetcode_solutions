@@ -6,17 +6,22 @@
 #         self.right = right
 class Solution:
     def getAllElements(self, root1: TreeNode, root2: TreeNode) -> List[int]:
-        def dfs_prefix(root):
-            if not root:
-                return
-            
-            l.append(root.val)
-            dfs_prefix(root.left)
-            dfs_prefix(root.right)
-            
         l = []
-        dfs_prefix(root1)
-        dfs_prefix(root2)
+        q = deque([root1, root2])
         
+        while q:
+            top = q.popleft()
+            
+            if top is None:
+                continue
+                
+            l.append(top.val)
+            
+            if top.left:
+                q.append(top.left)
+                
+            if top.right:
+                q.append(top.right)
+                
         return sorted(l)
     
