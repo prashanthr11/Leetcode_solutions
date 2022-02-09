@@ -1,8 +1,30 @@
 class Solution:
     def findPairs(self, nums: List[int], k: int) -> int:
-        return self.optimise(nums, k)
+        return self.solve(nums, k)
+    
+    def solve(self, nums, k):
+        '''
+        Time Complexity: O(N)
+        Space Complexity: O(N)
+        '''
+        d = Counter(nums)
+        keys = set(d)
+        cnt = 0
+        
+        for key in keys:
+            if k > 0 and k + key in d:
+                cnt += 1
+                
+            if k == 0 and d[key] > 1:
+                cnt += 1
+                
+        return cnt
     
     def optimise(self, nums, k):
+        '''
+        Time Complexity: O(N)
+        Space Complexity: O(N)
+        '''
         vis = set()
         ret = set()
         
