@@ -35,17 +35,19 @@ class Solution:
             char_counts[ord(i) - ord('a')] += 1
             
         for i in range(len(s2) - ln + 1):
-            if self.are_equal(char_counts.copy(), s2[i:i + ln]):
+            if self.are_equal(char_counts, s2[i:i + ln]):
                 return True
             
         return False
     
     def are_equal(self, l, s):
-        for a, i in enumerate(s):
-            if l[ord(i) - ord('a')] <= 0:
+        cnt = [0] * 26
+        for i in s:
+            cnt[ord(i) - ord('a')] += 1
+            
+        for i in range(26):
+            if l[i] != cnt[i]:
                 return False
             
-            l[ord(i) - ord('a')] -= 1
-            
-        return len([i for i in l if i != 0]) == 0
+        return True
     
