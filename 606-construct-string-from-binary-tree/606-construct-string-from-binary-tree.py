@@ -6,6 +6,9 @@
 #         self.right = right
 class Solution:
     def tree2str(self, root: Optional[TreeNode]) -> str:
+        return self.iterative(root)
+    
+    def recursive(self, root):
         '''
         Time Complexity: O(N)
         Space Complexity: O(N)
@@ -21,3 +24,35 @@ class Solution:
             return st + "(" + self.tree2str(root.left) + ")"
         
         return st + "(" + self.tree2str(root.left) + ")(" + self.tree2str(root.right) + ")"
+    
+    
+    def iterative(self, root):
+        '''
+        Time Complexity: O(N)
+        Space Complexity: O(N)
+        '''
+        ret = []
+        stack = [root]
+        visited = set()
+        
+        while stack:
+            top = stack[-1]
+            
+            if top in visited:
+                ret.append(")")
+                stack.pop()
+            else:
+                visited.add(top)
+                ret.append("(" + str(top.val))
+                
+                if not top.left and top.right:
+                    ret.append("()")
+                
+                if top.right:
+                    stack.append(top.right)
+                        
+                if top.left:
+                    stack.append(top.left)
+                    
+        return "".join(ret)[1:-1]
+    
