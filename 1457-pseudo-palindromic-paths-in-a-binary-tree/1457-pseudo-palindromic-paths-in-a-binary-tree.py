@@ -6,35 +6,41 @@
 #         self.right = right
 class Solution:
     def pseudoPalindromicPaths (self, root: Optional[TreeNode]) -> int:
+        # return self.iterative(root)
         self.cnt = 0
-        self.d = defaultdict(int)
-        self.d[root.val] = 1
-        self.dfs(root)
+        self.recursive(root, 0)
         return self.cnt
     
-    def dfs(self, root):
+    def recursive(self, root, value):
         if not root:
             return
         
+        value ^= (1 << root.val)
         if not root.left and not root.right:
-            if self.palindrome_possible():
+            if not value & (value - 1):
                 self.cnt += 1
-            return
+                
+        self.recursive(root.left, value)
+        self.recursive(root.right, value)
         
-        if root.left:
-            self.d[root.left.val] += 1
-            self.dfs(root.left)
-            self.d[root.left.val] -= 1
-            
-        if root.right:
-            self.d[root.right.val] += 1
-            self.dfs(root.right)
-            self.d[root.right.val] -= 1
-        
-    def palindrome_possible(self):
+    
+    def iterative(self, root):
+        stack = [(root, 0)]
         cnt = 0
-        for i in self.d:
-            cnt += (self.d[i] % 2)
-            
-        return cnt <= 1
+        
+        while stack:
+            top, value = stack.pop()
+                
+            value ^= (1 << top.val)
+            if not top.left and not top.right:
+                if value & (value - 1) == 0:
+                    cnt += 1
+            else:
+                if top.left:
+                    stack.append((top.left, value))
+                
+                if top.right:
+                    stack.append((top.right, value))
+                
+        return cnt
     
