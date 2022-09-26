@@ -23,18 +23,16 @@ class Solution:
             a_ordd, d_ordd = ord(a) - ord('a'), ord(d) - ord('a')
             
             if b == "=":
-                res = union_find.union(a_ordd, d_ordd)
-                if not res:
-                    flag = False
-        
+                if not union_find.union(a_ordd, d_ordd):
+                    return False
+            
         for a, b, c, d in equations:
             if b == "!":
                 a_ordd, d_ordd = ord(a) - ord('a'), ord(d) - ord('a')
-                
                 x, y = union_find.find(a_ordd), union_find.find(d_ordd)
                 
                 if x == y:
-                    flag = False
+                    return False
 
-        return flag
+        return True
     
