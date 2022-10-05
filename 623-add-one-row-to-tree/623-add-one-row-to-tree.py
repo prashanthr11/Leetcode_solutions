@@ -6,9 +6,33 @@
 #         self.right = right
 class Solution:
     def addOneRow(self, root: Optional[TreeNode], val: int, depth: int) -> Optional[TreeNode]:
-        ret = self.bfs(root, val, depth)
+        ret = self.dfs(root, val, depth)
         return ret
 
+    def dfs(self, root, val, depth):
+        if depth == 1:
+            return TreeNode(val, root)
+        
+        return self.dfs_(root, val, 1, depth)
+    
+    
+    def dfs_(self, root, val, node_depth, depth):
+        
+        if node_depth + 1 == depth:
+            tmp = root.left
+            root.left = TreeNode(val, tmp)
+                
+            tmp = root.right
+            root.right = TreeNode(val, None, tmp)
+                
+        if root.left:
+            self.dfs_(root.left, val, node_depth + 1, depth)
+            
+        if root.right:
+            self.dfs_(root.right, val, node_depth + 1, depth)
+            
+        return root
+        
     
     def bfs(self, root, val, depth):
         if depth == 1:
