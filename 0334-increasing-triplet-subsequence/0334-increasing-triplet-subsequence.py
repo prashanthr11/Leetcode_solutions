@@ -1,7 +1,23 @@
 class Solution:
     def increasingTriplet(self, nums: List[int]) -> bool:
-        return self.test(nums)
+        return self.even_optimise(nums)
     
+    def even_optimise(self, nums):
+        '''
+        Time Complexity: O(N)
+        Space Complexity: O(1)        
+        '''
+        left = mid = float('inf')
+        
+        for i in nums:
+            if i <= left:
+                left = i
+            elif i <= mid:
+                mid = i
+            else:
+                return True
+            
+        return False
     
     def naive(self, nums):
         '''
