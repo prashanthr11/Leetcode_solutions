@@ -19,17 +19,13 @@ class Solution:
             return self.memo[(i, d)]
         
         maxi = float('-inf')
-        mini = float('inf')
-        ret = mini
+        ret = float('inf')
         
         for j in range(i, len(jobs)):
             maxi = max(maxi, jobs[j])
             inc = self.solve(j + 1, d - 1)
-            not_inc = self.solve(j + 1, d)
-            
-            mini = min(mini, inc, not_inc)
                 
-            ret = min(ret, mini + maxi)
+            ret = min(ret, inc + maxi)
             
         self.memo[(i, d)] = ret
         return ret
