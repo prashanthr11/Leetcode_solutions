@@ -1,8 +1,8 @@
 class Solution:
     def countAndSay(self, n: int) -> str:
         '''
-        Time Complexity: O(N! * m) where m is the length of the string
-        Space Complexity: O(N!)
+        Time Complexity: O(N * m) where m is the length of the string
+        Space Complexity: O(N)
         '''
         if n == 1:
             return "1"
