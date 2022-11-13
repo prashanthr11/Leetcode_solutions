@@ -1,9 +1,27 @@
 class Solution:
     def countSubstrings(self, s: str) -> int:
-        return self.otpimise(s)
+        return self.optimise(s)
     
+    def optimise(self, s):
+        '''
+        Time Complexity: O(N^2)
+        Space Complexity: O(1)
+        '''
+        ret = 0
+        ln = len(s)
+        
+        for i in range(2*ln - 1):
+            left = i // 2
+            right = left + i % 2
+            
+            while left >= 0 and right < ln and s[left] == s[right]:
+                ret += 1
+                left -= 1
+                right += 1
+                
+        return ret
     
-    def otpimise(self, s):
+    def dp(self, s):
         '''
         Time Complexity: O(N^2)
         Space Complexity: O(N^2)
