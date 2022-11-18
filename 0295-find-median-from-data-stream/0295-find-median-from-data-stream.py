@@ -1,20 +1,21 @@
-from sortedcontainers import SortedList
-
 class MedianFinder:
 
     def __init__(self):
-        self.lst = SortedList()
+        self.small = []
+        self.large = []
+        
 
     def addNum(self, num: int) -> None:
-        self.lst.add(num)
+        if len(self.small) == len(self.large):
+            heappush(self.large, -heappushpop(self.small, -num))
+        else:
+            heappush(self.small, -heappushpop(self.large, num))
 
     def findMedian(self) -> float:
-        ln = len(self.lst)
-        
-        if ln % 2:
-            return self.lst[ln // 2]
+        if len(self.small) == len(self.large):
+            return (self.large[0] - self.small[0]) / 2
         else:
-            return (self.lst[ln // 2] + self.lst[(ln - 1) // 2]) / 2
+            return self.large[0]
 
 
 # Your MedianFinder object will be instantiated and called as such:
