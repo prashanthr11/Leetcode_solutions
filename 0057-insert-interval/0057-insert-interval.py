@@ -1,17 +1,17 @@
 class Solution:
     def insert(self, a: List[List[int]], b: List[int]) -> List[List[int]]:
         
-        # Time: O(N LogN)
+        # Time: O(N + logN)
         # Space: O(N)
         
         if not a:
             return [b]
         
-        idx = bisect.bisect(a, b[0], key=lambda x:x[0])
+        idx = bisect.bisect_left(a, b[0], key=lambda x:x[0])
         a.insert(idx, b)
         ret = list()
         
-        mini, maxi = a[0][0], a[0][1]
+        mini, maxi = a[0]
         
         for i in range(1, len(a)):
             if maxi >= a[i][0]:
@@ -24,3 +24,4 @@ class Solution:
                 
         ret.append([mini, maxi])
         return ret
+    
