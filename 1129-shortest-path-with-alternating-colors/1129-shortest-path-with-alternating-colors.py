@@ -2,28 +2,35 @@ class Solution:
     def shortestAlternatingPaths(self, n: int, redEdges: List[List[int]], blueEdges: List[List[int]]) -> List[int]:
         d = defaultdict(list)
         
-        for a, b in redEdges:
-            d[a].append((b, 0))
+        for u, v in redEdges:
+            d[u].append((v, 0))
             
-        for a, b in blueEdges:
-            d[a].append((b, 1))
+        for u, v in blueEdges:
+            d[u].append((v, 1))
             
-        answer = [-1] * n
-        visited = [[False] * 2 for i in range(n)]
-        
         q = deque([(0, 0, -1)])
-        visited[0][1] = visited[0][0] = True
-        answer[0] = 0
+        visited = [[False] * 2 for i in range(n)]
+        answer = [-1] * n
         
         while q:
-            node, steps, color = q.popleft()
+            node, cost, node_color = q.popleft()
             
-            for a, b in d[node]:
-                if not visited[a][b] and b != color:
-                    visited[a][b] = True
-                    q.append((a, steps + 1, b))
-                    if answer[a] == -1:
-                        answer[a] = steps + 1
-                        
+            if visited[node][node_color]:
+                continue
+                
+            if node_color == -1:
+                visited[node][0] = visited[node][1] = True
+            else:
+                visited[node][node_color] = True
+                
+            if answer[node] == -1:
+                answer[node] = cost
+            else:
+                answer[node] = min(answer[node], cost)
+            
+            for childs, color in d[node]:
+                if visited[childs][color] == False and color != node_color:
+                    q.append((childs, cost + 1, color))
+                    
         return answer
     
