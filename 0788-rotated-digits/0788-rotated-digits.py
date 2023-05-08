@@ -1,8 +1,8 @@
 class Solution:
     def rotatedDigits(self, n: int) -> int:
         '''
-        Time Complexity: O(N logN)
-        Space Complexity: O(1)
+        Time Complexity: O(N)
+        Space Complexity: O(N)
         '''
         self.d = {
             0: 0,
@@ -21,18 +21,12 @@ class Solution:
         return ret
     
     def solve(self, n):
-        n_dup = n
-        power = 0
-        ret = 0
+        req = n // 10
+        if req not in self.d or n % 10 not in self.d:
+            return False
         
-        while n:
-            req = n % 10
-            if req not in self.d:
-                return False
+        rev = self.d[req] * 10 + self.d[n % 10]
+        self.d[n] = rev
             
-            ret += self.d[req] * (10**power)
-            power += 1
-            n //= 10
-            
-        return ret != n_dup
+        return rev != n
     
