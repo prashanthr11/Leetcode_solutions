@@ -24,16 +24,15 @@ class Solution:
         n = len(grid)
         for i in range(n):
             for j in range(n):
-                if grid[i][j] and (i, j) not in self.set1:
+                if grid[i][j]:
                     return self.populate_sets(i, j, grid)
         
     def solve(self, grid):
         n = len(grid)
-        self.set1, self.set2 = set(), set()
+        self.set1 = set()
         self.neighbours = [(1, 0), (0, 1), (0, -1), (-1, 0)]
 
         self.set1 = self.find_islands(grid)
-        self.set2 = self.find_islands(grid)
         
         queue = deque([(x, y, 0) for x, y in self.set1])
         visited = set()
@@ -41,7 +40,7 @@ class Solution:
         while queue:
             x, y, cnt = queue.popleft()
             
-            if (x, y) in self.set2:
+            if grid[x][y] and (x, y) not in self.set1:
                 return cnt - 1
             
             if (x, y) in visited:
