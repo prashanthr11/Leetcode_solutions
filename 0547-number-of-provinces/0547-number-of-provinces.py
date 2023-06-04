@@ -18,7 +18,7 @@ class DSU:
             self.lst[par_a] = par_b
         else:
             self.lst[par_a] = par_b
-            self.rank[par_a] += 1
+            self.rank[par_b] += 1
 
 class Solution:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
@@ -27,7 +27,7 @@ class Solution:
         
         for i in range(n):
             for j in range(i + 1, n):
-                if i != j and isConnected[i][j]:
+                if isConnected[i][j]:
                     dsu_obj.union(i, j)
                     
         st = set()
