@@ -9,13 +9,43 @@ class Solution:
         lst = []
         mini = float('inf')
         
-        def dfs(root):
-            if not root:
-                return
+        def morris(root):
+            cur = root
             
-            dfs(root.left)
-            lst.append(root.val)
-            dfs(root.right)
+            while cur:
+                if cur.left is None:
+                    lst.append(cur.val)
+                    cur = cur.right
+                else:
+                    tmp = cur.left
+                    
+                    while tmp.right and tmp.right != cur:
+                        tmp = tmp.right
+                        
+                    if tmp.right:
+                        tmp.right = None
+                        lst.append(cur.val)
+                        cur = cur.right
+                    else:
+                        tmp.right = cur
+                        cur = cur.left
+        
+        def dfs(root):
+            stk = []
+            cur = root
+            
+            while True:
+                
+                if cur:
+                    stk.append(cur)
+                    cur = cur.left
+                else:
+                    if stk:
+                        cur = stk.pop()
+                        lst.append(cur.val)
+                        cur = cur.right
+                    else:
+                        break
             
         def get_min_abs_diff(lst):
             nonlocal mini
@@ -29,6 +59,6 @@ class Solution:
                 
             return mini
         
-        dfs(root)
+        morris(root)
         return get_min_abs_diff(lst)
     
