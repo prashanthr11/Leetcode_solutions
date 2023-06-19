@@ -18,7 +18,6 @@ class Solution:
                 return dp[(x, y)]
             
             cnt = 1
-            dp[(x, y)] = 1
             
             for x1, y1 in neighbours:
                 nx, ny = x + x1, y + y1
@@ -28,11 +27,6 @@ class Solution:
                     
             dp[(x, y)] = cnt
             return cnt
-        
-        for i in range(m):
-            for j in range(n):
-                ret += dfs(i, j)
-                ret = ret % MOD
                 
-        return ret % MOD
+        return sum(dfs(i, j) for j in range(n) for i in range(m)) % MOD
     
