@@ -1,84 +1,52 @@
-from collections import OrderedDict as od
+class ListNode:
+    def __init__(self, key, val):
+        self.key = key
+        self.val = val
+        self.prev = self.next = None
+        
 
 class LRUCache:
 
-    def __init__(self, a: int):
-        self.l = od()
-        self.maxi = a
+    def __init__(self, capacity: int):
+        self.maxi = capacity
+        self.cache = {}
+        self.left_most, self.right_most = ListNode(0, 0), ListNode(0, 0)
+        self.left_most.next = self.right_most
+        self.right_most.prev = self.left_most
 
-    def get(self, k: int) -> int:
-        if k not in self.l:
-            return -1
-        self.l.move_to_end(k)
-        return self.l[k]
-            
-
-    def put(self, k: int, v: int) -> None:
-        self.l[k] = v
-        self.l.move_to_end(k)
-
-        if len(self.l) > self.maxi:
-            self.l.popitem(last=False)
-
-
-class DoubleLinkedList:
-    def __init__(self, val, prev=None, next=None):
-        self.val = val
-        self.prev = prev
-        self.next = next
-        
-class LRUCacheTest:
-
-    def __init__(self, a: int):
-        self.d = {}
-        self.last_element = None
-        self.maxi = a
-        self.head = None
-        
-    def get(self, k: int) -> int:
-        if k not in self.d:
+    
+    def get(self, key: int) -> int:
+        if key not in self.cache:
             return -1
         
-        tmp = self.d[k]
-        node = tmp
-        
-        if node.prev:
-            if node.next:
-                node.prev.next = node.next
-            
-        if node.next:
-            node.next.prev = node.prev
-            node.next.next = node
-            node.prev = node.next
-        
-        node.next = None
-        last_node = self.last_element
-        if last_node != node:
-            last_node.next = node
-            node.prev = last_node
-        
-        self.last_element = node    
-        return tmp.val
+        self.remove(self.cache[key])
+        self.add(self.cache[key])
+        return self.cache[key].val
+    
 
-    def put(self, k: int, v: int) -> None:
-        if k in self.d:
-            self.d[k].val = v
-            self.get(k)
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:            
+            self.remove(self.cache[key])
             
-        else:
-            self.d[k] = DoubleLinkedList(v, self.last_element)
+        self.cache[key] = ListNode(key, value)
+        self.add(self.cache[key])
+        
+        if len(self.cache) > self.maxi:
+            del self.cache[self.left_most.next.key]
+            self.remove(self.left_most.next)
             
-            if self.head is None:
-                self.head = self.d[k]
-            
-            if self.last_element:
-                last_node = self.last_element
-                if last_node != self.d[k]:
-                    last_node.next = self.d[k]
-                    self.d[k].prev = last_node
-                    
-            self.last_element = self.d[k]
-                
-            if len(self.d) > self.maxi:
-                self.head = self.head.next
-                self.head.prev = None
+    def remove(self, node):
+        left, right = node.prev, node.next
+        left.next = right
+        right.prev = left
+        
+    def add(self, node):
+        left = self.right_most.prev
+        left.next = self.right_most.prev = node
+        node.prev = left
+        node.next = self.right_most
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
