@@ -1,6 +1,6 @@
 class Solution:
     def minSpeedOnTime(self, dist: List[int], hour: float) -> int:
-        low, high = 1, 10**9
+        low, high = 1, 10**7
         ln = len(dist)
         
         def solve(n):
