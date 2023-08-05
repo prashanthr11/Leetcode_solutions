@@ -1,7 +1,7 @@
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         ln = len(s)
-        dp = defaultdict(lambda : False)
+        dp = [False] * (ln + 1)
         dp[0] = True
         
         for i in range(1, ln + 1):
