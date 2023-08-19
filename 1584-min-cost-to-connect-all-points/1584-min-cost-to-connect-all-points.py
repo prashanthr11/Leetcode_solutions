@@ -1,6 +1,3 @@
-
-
-
 class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
         cnt = 0
@@ -9,9 +6,10 @@ class Solution:
         visited = set()
         heap = [(0, 0)]
         heapify(heap)
+        dist = [float('inf')] * n
+        dist[0] = 0
         
         while heap:
-            # print(ret, heap)
             tmp, idx = heappop(heap)
             
             if cnt == n:
@@ -27,7 +25,9 @@ class Solution:
                 if idx != j and j not in visited:
                     cost = abs(points[idx][0] - points[j][0]) + abs(points[idx][1] - points[j][1])
                     
-                    heappush(heap, (cost, j))
+                    if dist[j] > cost:
+                        dist[j] = cost
+                        heappush(heap, (cost, j))
 
             visited.add(idx)
             cnt += 1
