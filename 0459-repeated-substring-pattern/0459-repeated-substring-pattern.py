@@ -1,13 +1,45 @@
 class Solution:
     def repeatedSubstringPattern(self, s: str) -> bool:
-        return self.naive(s)
+        return self.optimise(s)
+    
+    
+    def optimise(self, s):
+        n = len(s)
+        lps = [0] * n
         
+        i, j = 1, 0
+        
+        while i < n:
+            if s[i] == s[j]:
+                lps[i] = j + 1
+                i += 1
+                j += 1
+            elif j != 0 and s[i] != s[j]:
+                j = lps[j - 1]
+            else:
+                i += 1
+                
+        if lps[n - 1] == 0:
+            return False
+        
+        pat = n - lps[n - 1]
+        return n % pat == 0
+    
         
     def naive(self, s):
         n = len(s)
         
         def solve(i, j, mod):
-            return len(s.replace(s[i:j], "")) == 0
+            while j < n:
+                if s[j] != s[i]:
+                    return False
+                
+                i += 1
+                i %= mod
+                j += 1
+                
+            return True
+            
     
         
         for i in range(1, (n // 2) + 1):
