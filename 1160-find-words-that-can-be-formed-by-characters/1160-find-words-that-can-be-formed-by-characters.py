@@ -1,14 +1,24 @@
 class Solution:
     def countCharacters(self, words: List[str], chars: str) -> int:
         ret = 0
+        d = [0] * 26
         
-        d = Counter(chars)
+        for i in chars:
+            d[ord(i) - ord('a')] += 1
         
         for word in words:
-            word_cntr = Counter(word)
+            d_copy = d.copy()
+            flag = True
             
-            if len(word_cntr - d) == 0:
-                ret += len(word)
+            for j in word:
+                if d_copy[ord(j) - ord('a')] <= 0:
+                    flag = False
+                    break
+                    
+                d_copy[ord(j) - ord('a')] -= 1
                 
+            if flag:
+                ret += len(word)
+            
         return ret
     
