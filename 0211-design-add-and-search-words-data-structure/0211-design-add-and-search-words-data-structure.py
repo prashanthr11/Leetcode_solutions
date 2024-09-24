@@ -1,7 +1,7 @@
 class Trie:
     
     def __init__(self):
-        self.nodes = [None] * 26
+        self.nodes = defaultdict(dict)
         self.is_end = False
 
 class WordDictionary:
@@ -14,11 +14,10 @@ class WordDictionary:
         root = self.trie_obj
         
         for char in word:
-            idx = ord(char) - ord('a')
-            if not root.nodes[idx]:
-                root.nodes[idx] = Trie()
+            if char not in root.nodes:
+                root.nodes[char] = Trie()
                 
-            root = root.nodes[idx]
+            root = root.nodes[char]
         
         root.is_end = True
         
@@ -28,15 +27,13 @@ class WordDictionary:
         
         for i, char in enumerate(word):
             if char != ".":
-                idx = ord(char) - ord('a')
-                
-                if not root.nodes[idx]:
+                if char not in root.nodes:
                     return False
                 
-                root = root.nodes[idx]
+                root = root.nodes[char]
             else:
-                for node in root.nodes:
-                    if node and self.search(word[i + 1:], node):
+                for char, node_ref in root.nodes.items():
+                    if self.search(word[i + 1:], node_ref):
                         return True
                     
                 return False
