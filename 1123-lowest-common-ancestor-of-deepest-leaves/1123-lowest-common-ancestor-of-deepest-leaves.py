@@ -25,26 +25,17 @@ class Solution:
                 if node.right:
                     dq.append((node.right, node))
                     
-        ancestors = self.get_ancestors(last_level[0][0], parents)
-        
-        for i in range(1, len(last_level)):
-            tmp = last_level[i][0]
-            
-            while tmp and tmp not in ancestors:
-                tmp = parents[tmp]
-                
-            while ancestors and ancestors[-1] != tmp:
-                ancestors.pop()
-                
-        return ancestors[-1]
+        return self.lca(root, last_level[0][0], last_level[-1][0])
     
+    
+    def lca(self, root, p, q):
+        if not root:
+            return None
         
-    def get_ancestors(self, node, parents):
-        ancestors = deque([])
+        if root == p or root == q:
+            return root
         
-        while node and node in parents:
-            ancestors.appendleft(node)
-            node = parents[node]
-            
-        return ancestors
+        left = self.lca(root.left, p, q)
+        right = self.lca(root.right, p, q)
+        return root if left and right else left or right
     
