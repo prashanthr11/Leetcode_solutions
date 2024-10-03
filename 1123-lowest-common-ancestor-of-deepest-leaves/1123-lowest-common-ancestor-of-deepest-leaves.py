@@ -25,17 +25,14 @@ class Solution:
                 if node.right:
                     dq.append((node.right, node))
                     
-        return self.lca(root, last_level[0][0], last_level[-1][0])
+        return self.lca(root, last_level[0][0], last_level[-1][0], parents)
     
     
-    def lca(self, root, p, q):
-        if not root:
-            return None
+    def lca(self, root, p, q, parents):
         
-        if root == p or root == q:
-            return root
-        
-        left = self.lca(root.left, p, q)
-        right = self.lca(root.right, p, q)
-        return root if left and right else left or right
+        while p != q:
+            p = parents[p] if p in parents else q
+            q = parents[q] if q in parents else p
+            
+        return p
     
