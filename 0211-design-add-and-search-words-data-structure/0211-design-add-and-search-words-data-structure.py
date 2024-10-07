@@ -1,47 +1,47 @@
-class Trie:
-    
+class TrieNode:
+
     def __init__(self):
-        self.nodes = defaultdict(dict)
+        self.chars = [None] * 26
         self.is_end = False
+
 
 class WordDictionary:
 
     def __init__(self):
-        self.trie_obj = Trie()
-        
+        self.head = TrieNode()
 
-    def addWord(self, word: str) -> None:
-        root = self.trie_obj
-        
+    def addWord(self, word):
+        trie_ref = self.head
+
         for char in word:
-            if char not in root.nodes:
-                root.nodes[char] = Trie()
-                
-            root = root.nodes[char]
-        
-        root.is_end = True
-        
+            idx = ord(char) - ord('a')
 
-    def search(self, word: str, root=None) -> bool:
-        root = self.trie_obj if root is None else root
-        
+            if not trie_ref.chars[idx]:
+                trie_ref.chars[idx] = TrieNode()
+
+            trie_ref = trie_ref.chars[idx]
+
+        trie_ref.is_end = True
+
+
+    def search(self, word):
+        return self.dfs(self.head, word)
+
+
+    def dfs(self, trie_ref, word):
         for i, char in enumerate(word):
-            if char != ".":
-                if char not in root.nodes:
-                    return False
-                
-                root = root.nodes[char]
-            else:
-                for char, node_ref in root.nodes.items():
-                    if self.search(word[i + 1:], node_ref):
-                        return True
-                    
+            if char == '.':
+                for child in trie_ref.chars:
+                    if child:
+                        if self.dfs(child, word[i + 1:]):
+                            return True
                 return False
-                    
-        return root.is_end
+            else:
+                idx = ord(char) - ord('a')
 
+                if trie_ref.chars[idx] is None:
+                    return False
 
-# Your WordDictionary object will be instantiated and called as such:
-# obj = WordDictionary()
-# obj.addWord(word)
-# param_2 = obj.search(word)
+                trie_ref = trie_ref.chars[idx]
+
+        return trie_ref.is_end
